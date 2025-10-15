@@ -117,7 +117,7 @@ public class TransactionAnalyzerTests
         Assert.StartsWith("Ошибка", TransactionAnalyzer.AnalyzeTransaction(tx));
     }
 
-    // дополнительные тесты для написания
+    // дополнительные тесты
 
     [Fact]
     public void RejectsWebWithdrawal()
@@ -136,22 +136,21 @@ public class TransactionAnalyzerTests
     [Fact]
     public void RejectsWeekendOnlineTransferBetweenDifferentAccounts()
     {
-        // Убедимся, что это точно выходной
-        var weekend = new DateTime(2024, 3, 2); // Суббота
-        Console.WriteLine($"Day of week: {weekend.DayOfWeek}"); // Должно быть Saturday
+        var weekend = new DateTime(2024, 3, 2); 
+        Console.WriteLine($"Day of week: {weekend.DayOfWeek}"); 
 
         var tx = new Transaction
         {
             Amount = 1000,
             Kind = TransactionKind.Transfer,
-            FromAccountType = "Current", // Используем английские названия
-            ToAccountType = "Savings", // чтобы избежать проблем с кодировкой
-            IsInternal = true, // Внутренняя операция
-            IsVipClient = true, // VIP для обхода других ограничений
-            Channel = "Web", // Онлайн-канал
+            FromAccountType = "Current",
+            ToAccountType = "Savings", 
+            IsInternal = true, 
+            IsVipClient = true, 
+            Channel = "Web", 
             Timestamp = weekend,
-            DailyTransactionCount = 1, // Устанавливаем явно
-            DailyTransactionTotal = 1000 // чтобы избежать лимитов
+            DailyTransactionCount = 1, 
+            DailyTransactionTotal = 1000 
         };
 
         var result = TransactionAnalyzer.AnalyzeTransaction(tx);
